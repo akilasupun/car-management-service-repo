@@ -1,6 +1,7 @@
 package com.rental.core.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,9 @@ import com.rental.core.service.CarService;
 public class CarInfoController {
 	@Autowired
 	CarService service;
+
+	@Autowired
+	Environment environment;
 
 	@PostMapping(value = "/addCar")
 	public Car addNewCar(@RequestBody Car newCar) {
@@ -41,5 +45,10 @@ public class CarInfoController {
 	@DeleteMapping(path = "/removeCar/{carId}")
 	public void removeCar(@PathVariable Long carId) {
 		service.removeCar(carId);
+	}
+
+	@GetMapping(path = "/getPort")
+	public int getRunningPort() {
+		return Integer.valueOf(environment.getProperty("local.server.port"));
 	}
 }
